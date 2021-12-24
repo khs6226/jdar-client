@@ -6,12 +6,9 @@ const Registration = () => {
   const [usernameReg, setUsernameReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+
   const [name, setName] = useState("");
   const [gender, setGender] = useState(1);
-
-  const [loginStatus, setLoginStatus] = useState("");
 
   Axios.defaults.withCredentials = true;
 
@@ -31,33 +28,13 @@ const Registration = () => {
     });
   };
 
-  const login = () => {
-    Axios.post("http://localhost:3001/login", {
-      username: username,
-      password: password,
-    }).then((response) => {
-      if (response.data.message) {
-        setLoginStatus(response.data.message);
-      } else {
-        setLoginStatus(response.data[0].username);
-      }
-    });
-  };
-
-  useEffect(() => {
-    Axios.get("http://localhost:3001/login").then((response) => {
-      if (response.data.loggedIn === true) {
-        setLoginStatus(response.data.user[0].username);
-      }
-    });
-  }, []);
-
   return (
     <div className="App">
       <div className="navContainer">
         <nav>
           <Link to="/">Home</Link>
           <Link to="/registration">회원가입</Link>
+          <Link to="/login">로그인</Link>
           <Link to="/matchinput">스코어입력</Link>
         </nav>
       </div>
@@ -94,27 +71,6 @@ const Registration = () => {
         </select>
         <button onClick={register}> Register </button>
       </div>
-
-      <div className="login">
-        <h1>Login</h1>
-        <input
-          type="text"
-          placeholder="Username..."
-          onChange={(e) => {
-            setUsername(e.target.value);
-          }}
-        />
-        <input
-          type="password"
-          placeholder="Password..."
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
-        <button onClick={login}> Login </button>
-      </div>
-
-      <h1>{loginStatus}</h1>
     </div>
   );
 }
