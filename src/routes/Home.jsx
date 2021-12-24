@@ -12,6 +12,7 @@ const Home = () => {
         <nav>
           <Link to="/">Home</Link>
           <Link to="/registration">회원가입</Link>
+          <Link to="/login">로그인</Link>
           <Link to="/matchinput">스코어입력</Link>
         </nav>
       </div>
