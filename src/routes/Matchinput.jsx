@@ -14,25 +14,41 @@ const Matchinput = () => {
   Axios.defaults.withCredentials = true;
 
   const addPerson = () => {
-    if (participants.some(e => e.name === participant)) {
+    let partName = document.getElementById("partName");
+    let partWins = document.getElementById("partWins");
+    if (!participant) {
+      alert("선수 이름을 등록해주세요")
+      partName.focus();
+    } else if (!wins) {
+      alert("승수를 입력해주세요")
+      partWins.focus();
+    } else if (participants.some(e => e.name === participant)) {
       alert("이미 등록된 선수입니다.");
       return;
     } else {
       setParticipants([...participants, { name: participant, winCount: wins }])
-      let cont = document.createElement("div");
-      cont.setAttribute("class", "playerDiv");
-      let p = document.createElement("p");
-      p.innerHTML = `${participant} ${wins}승`;
+      // let cont = document.createElement("div");
+      // cont.setAttribute("class", "playerDiv");
+      // let p = document.createElement("p");
+      // p.innerHTML = `${participant} ${wins}승`;
+
       // let btn = document.createElement("button");
       // btn.setAttribute("onClick", "deletePlayer(this)")
       // btn.innerHTML = "삭제";
-      cont.appendChild(p);
       // cont.appendChild(btn);
-      document.getElementById("playerList").appendChild(cont);
+
+      // cont.appendChild(p);
+      // document.getElementById("playerList").appendChild(cont);
+
+      partName.value = '';
+      partWins.value = '';
+      partName.focus();
     }
   }
 
+  const deleteItem = () => {
 
+  }
 
   // const register = () => {
   //   Axios.post("http://localhost:3001/register", {
@@ -53,7 +69,7 @@ const Matchinput = () => {
   //       setLoginStatus(response.data.user[0].username);
   //     }
   //   });
-  // }, []);
+  // }, [participants]);
 
   return (
     <div className="App">
@@ -61,6 +77,7 @@ const Matchinput = () => {
         <nav>
           <Link to="/">Home</Link>
           <Link to="/registration">회원가입</Link>
+          <Link to="/login">로그인</Link>
           <Link to="/matchinput">스코어입력</Link>
         </nav>
       </div>
@@ -91,6 +108,7 @@ const Matchinput = () => {
         <div className="participant">
           <label>선수 이름</label>
           <input
+            id="partName"
             className="partInfo"
             type="text"
             onChange={(e) => {
@@ -99,6 +117,7 @@ const Matchinput = () => {
           />
           <label>승수</label>
           <input
+            id="partWins"
             className="partInfo"
             type="number"
             onChange={(e) => {
@@ -107,7 +126,14 @@ const Matchinput = () => {
           />
           <button onClick={addPerson}>선수 등록</button>
           <div id="playerList">
-
+            {participants.map((part) => {
+              return (
+                <div className="playerDiv" key={part.name + part.winCount}>
+                  <p>{part.name} {part.winCount}승</p>
+                  <button onClick={deleteItem}>삭제</button>
+                </div>
+              )
+            })}
           </div>
         </div>
         {/* <button onClick={register}> Register </button> */}
