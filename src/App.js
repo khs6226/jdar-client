@@ -4,6 +4,7 @@ import "./App.css";
 import Home from "./routes/Home";
 import Registration from "./routes/Registration";
 import Matchinput from "./routes/Matchinput";
+import Signin from "./routes/Signin";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/matchinput" element={<Matchinput />} />
+        <Route path="/login" element={<Signin />} />
       </Routes>
     </Router>
   );
