@@ -56,11 +56,11 @@ const Playerscore = () => {
               return (
                 <tr key={player.name}>
                   <td>{player.name}</td>
-                  <td>1</td>
+                  <td>Lv{player.level}</td>
                   <td>{player.total}</td>
                   <td>{player.winPoint}</td>
                   <td>{player.partPoint}</td>
-                  <td>10</td>
+                  <td>{player.ownerPoint}</td>
                 </tr>
               );
             })}
