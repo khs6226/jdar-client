@@ -4,13 +4,13 @@ import Axios from "axios";
 
 const Matchinput = () => {
   const [date, setDate] = useState();
-  const [name, setName] = useState("");
+  const [ownerName, setOwnerName] = useState("");
   const [participants, setParticipants] = useState([]);
   const [location, setLocation] = useState("");
   const [participant, setParticipant] = useState("");
-  const [wins, setWins] = useState()
+  const [wins, setWins] = useState();
+  const [names, setNames] = useState();
 
-  console.log("participants", participants)
   Axios.defaults.withCredentials = true;
 
   const addPerson = () => {
@@ -27,51 +27,71 @@ const Matchinput = () => {
       return;
     } else {
       setParticipants([...participants, { name: participant, winCount: wins }])
-      // let cont = document.createElement("div");
-      // cont.setAttribute("class", "playerDiv");
-      // let p = document.createElement("p");
-      // p.innerHTML = `${participant} ${wins}승`;
-
-      // let btn = document.createElement("button");
-      // btn.setAttribute("onClick", "deletePlayer(this)")
-      // btn.innerHTML = "삭제";
-      // cont.appendChild(btn);
-
-      // cont.appendChild(p);
-      // document.getElementById("playerList").appendChild(cont);
-
       partName.value = '';
       partWins.value = '';
       partName.focus();
     }
   }
 
-  const deleteItem = () => {
-
+  const deleteItem = (idx) => {
+    const newParticipants = [...participants];
+    newParticipants.splice(idx, 1);
+    setParticipants(newParticipants);
   }
 
-  // const register = () => {
-  //   Axios.post("http://localhost:3001/register", {
-  //     username: usernameReg,
-  //     password: passwordReg,
-  //     name: name,
-  //     gender: gender,
-  //   }).then((response) => {
-  //     console.log(response);
-  //   });
-  // };
+  const getNames = async () => {
+    const names = await Axios.get("http://localhost:3001/getnames");
+    setNames(names.data.result);
+  }
 
+  const addParticipants = () => {
+    let partDiv = document.getElementById("participant");
+    let btn = document.getElementById("addPartBtn");
+    let dateInput = document.getElementById("dateInput");
+    let locationInput = document.getElementById("locationInput");
+    let ownerInput = document.getElementById("ownerInput");
 
+    if(!ownerName) {
+      alert('주최자를 선택해주세요');
+      ownerInput.focus();
+    } else {
+      partDiv.style.display = 'flex';
+      btn.style.display = 'none';
+      dateInput.setAttribute("disabled", "true");
+      locationInput.setAttribute("disabled", "true");
+      ownerInput.setAttribute("disabled", "true");
+  
+      Axios.post("http://localhost:3001/matchregister", {
+        date: date,
+        ownerName: ownerName,
+        location: location,
+      }).then((response) => {
+        console.log('response', response)
+      });
+    }
+  }
 
-  // useEffect(() => {
-  //   Axios.get("http://localhost:3001/login").then((response) => {
-  //     if (response.data.loggedIn === true) {
-  //       setLoginStatus(response.data.user[0].username);
-  //     }
-  //   });
-  // }, [participants]);
+  const registerPlayer = () => {
+    if(!participants) {
+      alert('선수를 등록해주세요');
+    } else {
+      Axios.post("http://localhost:3001/registerplayer", {
+        date: date,
+        ownerName: ownerName,
+        location: location,
+        participants: participants,
+      })
+      window.location.reload(false);
+    }
+  }
 
-  return (
+  useEffect(() => {
+    getNames();
+  }, []);
+
+  return !names ? (
+    "Page is loading"
+  ) : (
     <div className="App">
       <div className="navContainer">
         <nav>
@@ -79,12 +99,14 @@ const Matchinput = () => {
           <Link to="/registration">회원가입</Link>
           <Link to="/login">로그인</Link>
           <Link to="/matchinput">스코어입력</Link>
+          <Link to="/playerscore">개인점수</Link>
         </nav>
       </div>
       <div className="registration">
         <h1>경기결과입력</h1>
         <label>날짜</label>
         <input
+          id="dateInput"
           type="date"
           onChange={(e) => {
             setDate(e.target.value);
@@ -92,29 +114,45 @@ const Matchinput = () => {
         />
         <label>장소</label>
         <input
+          id="locationInput"
           type="text"
           onChange={(e) => {
             setLocation(e.target.value);
           }}
         />
         <label>주최자</label>
-        <input
+        <select
+          id="ownerInput"
           type="text"
           onChange={(e) => {
-            setName(e.target.value);
+            setOwnerName(e.target.value);
           }}
-        />
-        <label>참가자 입력</label>
-        <div className="participant">
+        >
+          {<option hidden>선택</option>}
+          {names.map((data) => {
+            return (
+              <option key={data.name} value={data.name}>{data.name}</option>
+            )
+          })}
+        </select>
+        <button id="addPartBtn" onClick={addParticipants}>참가자 입력</button>
+        <div id="participant">
           <label>선수 이름</label>
-          <input
+          <select
             id="partName"
             className="partInfo"
             type="text"
             onChange={(e) => {
               setParticipant(e.target.value)
             }}
-          />
+          >
+            {<option hidden>선택</option>}
+            {names.map((data) => {
+              return (
+                <option key={data.name} value={data.name}>{data.name}</option>
+              )
+            })}
+          </select>
           <label>승수</label>
           <input
             id="partWins"
@@ -126,15 +164,16 @@ const Matchinput = () => {
           />
           <button onClick={addPerson}>선수 등록</button>
           <div id="playerList">
-            {participants.map((part) => {
+            {participants.map((part, idx) => {
               return (
-                <div className="playerDiv" key={part.name + part.winCount}>
+                <div className="playerDiv" key={part.name + part.winCount} idx={idx}>
                   <p>{part.name} {part.winCount}승</p>
-                  <button onClick={deleteItem}>삭제</button>
+                  <button onClick={() => deleteItem(idx)}>삭제</button>
                 </div>
               )
             })}
           </div>
+          <button onClick={registerPlayer}>결과 입력</button>
         </div>
         {/* <button onClick={register}> Register </button> */}
       </div>

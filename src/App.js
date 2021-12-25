@@ -5,6 +5,7 @@ import Home from "./routes/Home";
 import Registration from "./routes/Registration";
 import Matchinput from "./routes/Matchinput";
 import Signin from "./routes/Signin";
+import Playerscore from "./routes/Playerscore";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/registration" element={<Registration />} />
         <Route path="/matchinput" element={<Matchinput />} />
         <Route path="/login" element={<Signin />} />
+        <Route path="/playerscore" element={<Playerscore />} />
       </Routes>
     </Router>
   );

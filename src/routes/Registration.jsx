@@ -13,19 +13,30 @@ const Registration = () => {
   Axios.defaults.withCredentials = true;
 
   const register = () => {
-    Axios.post("http://localhost:3001/register", {
-      username: usernameReg,
-      password: passwordReg,
-      name: name,
-      gender: gender,
-    }).then((response) => {
-      if (response.data.message) {
-        document.getElementById("username").focus();
-        alert(response.data.message);
-      } else {
-        alert("계정이 생성되었습니다.");
-      }
-    });
+    if(!usernameReg) {
+      alert('아이디를 입력해주세요.');
+      document.getElementById('username').focus();
+    } else if(!passwordReg) {
+      alert('비밀번호를 입력해주세요.');
+      document.getElementById('password').focus();
+    } else if(!name) {
+      alert('이름을 입력해주세요');
+      document.getElementById('name').focus();
+    } else {
+      Axios.post("http://localhost:3001/register", {
+        username: usernameReg,
+        password: passwordReg,
+        name: name,
+        gender: gender,
+      }).then((response) => {
+        if (response.data.message) {
+          document.getElementById("username").focus();
+          alert(response.data.message);
+        } else {
+          alert("계정이 생성되었습니다.");
+        }
+      });
+    }
   };
 
   return (
@@ -36,6 +47,7 @@ const Registration = () => {
           <Link to="/registration">회원가입</Link>
           <Link to="/login">로그인</Link>
           <Link to="/matchinput">스코어입력</Link>
+          <Link to="/playerscore">개인점수</Link>
         </nav>
       </div>
       <div className="registration">
@@ -50,6 +62,7 @@ const Registration = () => {
         />
         <label>비밀번호</label>
         <input
+          id="password"
           type="password"
           onChange={(e) => {
             setPasswordReg(e.target.value);
@@ -57,6 +70,7 @@ const Registration = () => {
         />
         <label>이름</label>
         <input
+          id="name"
           type="text"
           onChange={(e) => {
             setName(e.target.value)

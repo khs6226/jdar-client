@@ -1,5 +1,6 @@
-.App {
+#root {
   text-align: center;
+  font-size: 12px;
 }
 
 .imgContainer {
@@ -11,12 +12,17 @@
   width: 50%;
 }
 
+.navContainer {
+  margin: 1rem;
+}
+
 .navContainer nav {
   display: flex;
   justify-content: space-evenly;
 }
 
-.registration, .login {
+.registration,
+.login {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,4 +37,20 @@ input {
 .playerDiv {
   display: flex;
   justify-content: center;
+}
+
+#participant {
+  display: none;
+}
+
+.tableContainer {
+  margin: 1rem;
+}
+
+table {
+  margin: 0 auto;
+}
+
+tbody {
+  text-align: center;
 }
