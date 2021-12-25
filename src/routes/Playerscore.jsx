@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 
-const Home = () => {
+const Playerscore = () => {
   const [playerInfo, setPlayerInfo] = useState([]);
-  const [partNum, setPartNum] = useState();
   // const [names, setNames] = useState();
 
   // const getNames = async () => {
@@ -13,19 +12,9 @@ const Home = () => {
   // };
 
   const getScores = async () => {
-    const data = await Axios.get("http://localhost:3001/getplayerscore", {
-      params: {
-        name: "김홍순",
-      },
-    });
-    const player = data.data.result;
-    console.log("result", data);
-    // let wins;
-    // scores.forEach((score) => {
-    //   wins += score.winCount;
-    // });
-    // setPartNum(scores);
-    setPlayerInfo([...playerInfo, player]);
+    const result = await Axios.get("http://localhost:3001/getplayerscore");
+    console.log("result", result);
+    setPlayerInfo(result.data);
   };
 
   // useEffect(() => {
@@ -40,7 +29,6 @@ const Home = () => {
     "page is loading"
   ) : (
     <div>
-      {console.log("partnum", partNum)}
       {console.log("playerInfo", playerInfo)}
       <div className="navContainer">
         <nav>
@@ -66,7 +54,7 @@ const Home = () => {
           <tbody>
             {playerInfo.map((player) => {
               return (
-                <tr>
+                <tr key={player.name}>
                   <td>{player.name}</td>
                   <td>1</td>
                   <td>{player.total}</td>
@@ -91,4 +79,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Playerscore;
