@@ -38,7 +38,9 @@ const Matchinput = () => {
   };
 
   const getNames = async () => {
-    const names = await Axios.get("http://localhost:3001/getnames");
+    const names = await Axios.get(
+      `${process.env.REACT_APP_DESTINATION}/getnames`
+    );
     setNames(names.data.result);
   };
 
@@ -59,7 +61,7 @@ const Matchinput = () => {
       locationInput.setAttribute("disabled", "true");
       ownerInput.setAttribute("disabled", "true");
 
-      Axios.post("http://localhost:3001/matchregister", {
+      Axios.post(`${process.env.REACT_APP_DESTINATION}/matchregister`, {
         date: date,
         ownerName: ownerName,
         location: location,
@@ -73,7 +75,7 @@ const Matchinput = () => {
     if (!participants) {
       alert("선수를 등록해주세요");
     } else {
-      Axios.post("http://localhost:3001/registerplayer", {
+      Axios.post(`${process.env.REACT_APP_DESTINATION}/registerplayer`, {
         date: date,
         ownerName: ownerName,
         location: location,
