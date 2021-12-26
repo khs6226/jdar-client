@@ -14,6 +14,7 @@ const Matchinput = () => {
   const addPerson = () => {
     let partName = document.getElementById("partName");
     let partWins = document.getElementById("partWins");
+    const regisPlayerBtn = document.getElementById("regisPlayer");
     if (!participant) {
       alert("선수 이름을 등록해주세요");
       partName.focus();
@@ -28,6 +29,7 @@ const Matchinput = () => {
       partName.value = "";
       partWins.value = "";
       partName.focus();
+      regisPlayerBtn.style.display = "block";
     }
   };
 
@@ -56,6 +58,8 @@ const Matchinput = () => {
       ownerInput.focus();
     } else {
       partDiv.style.display = "flex";
+      partDiv.style.flexDirection = "column";
+      partDiv.style.alignItems = "center";
       btn.style.display = "none";
       dateInput.setAttribute("disabled", "true");
       locationInput.setAttribute("disabled", "true");
@@ -75,13 +79,17 @@ const Matchinput = () => {
     if (!participants) {
       alert("선수를 등록해주세요");
     } else {
-      Axios.post(`${process.env.REACT_APP_DESTINATION}/registerplayer`, {
-        date: date,
-        ownerName: ownerName,
-        location: location,
-        participants: participants,
-      });
-      window.location.reload(false);
+      if (window.confirm("모든 선수를 등록하셨나요?") == true) {
+        Axios.post(`${process.env.REACT_APP_DESTINATION}/registerplayer`, {
+          date: date,
+          ownerName: ownerName,
+          location: location,
+          participants: participants,
+        });
+        window.location.reload(false);
+      } else {
+        return;
+      }
     }
   };
 
@@ -102,9 +110,9 @@ const Matchinput = () => {
           <Link to="/playerscore">개인점수</Link>
         </nav>
       </div>
-      <div className="registration">
+      <div className="matchregistration">
         <h1>경기결과입력</h1>
-        <label>날짜</label>
+        <h3>날짜</h3>
         <input
           id="dateInput"
           type="date"
@@ -112,7 +120,7 @@ const Matchinput = () => {
             setDate(e.target.value);
           }}
         />
-        <label>장소</label>
+        <h3>장소</h3>
         <input
           id="locationInput"
           type="text"
@@ -120,7 +128,7 @@ const Matchinput = () => {
             setLocation(e.target.value);
           }}
         />
-        <label>주최자</label>
+        <h3>주최자</h3>
         <select
           id="ownerInput"
           type="text"
@@ -141,34 +149,37 @@ const Matchinput = () => {
           참가자 입력
         </button>
         <div id="participant">
-          <label>선수 이름</label>
-          <select
-            id="partName"
-            className="partInfo"
-            type="text"
-            onChange={(e) => {
-              setParticipant(e.target.value);
-            }}
-          >
-            {<option hidden>선택</option>}
-            {names.map((data) => {
-              return (
-                <option key={data.name} value={data.name}>
-                  {data.name}
-                </option>
-              );
-            })}
-          </select>
-          <label>승수</label>
-          <input
-            id="partWins"
-            className="partInfo"
-            type="number"
-            onChange={(e) => {
-              setWins(e.target.value);
-            }}
-          />
-          <button onClick={addPerson}>선수 등록</button>
+          <h3>참가자를 등록해주세요</h3>
+          <div id="partForm">
+            <label>선수 이름</label>
+            <select
+              id="partName"
+              className="partInfo"
+              type="text"
+              onChange={(e) => {
+                setParticipant(e.target.value);
+              }}
+            >
+              {<option hidden>선택</option>}
+              {names.map((data) => {
+                return (
+                  <option key={data.name} value={data.name}>
+                    {data.name}
+                  </option>
+                );
+              })}
+            </select>
+            <label>승수</label>
+            <input
+              id="partWins"
+              className="partInfo"
+              type="number"
+              onChange={(e) => {
+                setWins(e.target.value);
+              }}
+            />
+            <button onClick={addPerson}>등록</button>
+          </div>
           <div id="playerList">
             {participants.map((part, idx) => {
               return (
@@ -185,7 +196,9 @@ const Matchinput = () => {
               );
             })}
           </div>
-          <button onClick={registerPlayer}>결과 입력</button>
+          <button id="regisPlayer" onClick={registerPlayer}>
+            결과 입력
+          </button>
         </div>
         {/* <button onClick={register}> Register </button> */}
       </div>

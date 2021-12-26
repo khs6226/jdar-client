@@ -28,6 +28,32 @@
   justify-content: center;
   align-items: center;
 }
+.registration input,
+.login input,
+.matchregistration input {
+  width: 200px;
+  height: 20px;
+}
+
+.registration *,
+.login * {
+  margin: 0.5rem;
+}
+
+.matchregistration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.matchregistration h3 {
+  margin: 0.7rem 0 0.3rem 0;
+}
+
+.matchregistration select,
+.matchregistration button {
+  margin: 0 0 0.5rem;
+}
 
 input {
   width: 250px;
@@ -39,8 +65,34 @@ input {
   justify-content: center;
 }
 
+.playerDiv button {
+  margin: 0.5rem;
+}
+
 #participant {
   display: none;
+  margin-top: 1rem;
+}
+#partForm button {
+  width: 20%;
+}
+
+#partWins {
+  width: 10%;
+}
+
+#partName,
+#partWins {
+  margin-right: 1rem;
+}
+
+#playerList {
+  margin-bottom: 1rem;
+}
+
+#regisPlayer {
+  width: 30%;
+  padding: 0.5rem;
 }
 
 .tableContainer {
@@ -49,6 +101,18 @@ input {
 
 table {
   margin: 0 auto;
+}
+
+thead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
+
+th,
+td {
+  padding-bottom: 0.3rem;
 }
 
 tbody {
