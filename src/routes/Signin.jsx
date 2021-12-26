@@ -12,9 +12,9 @@ const Signin = () => {
       password: password,
     }).then((response) => {
       if (response.data.message) {
-        console.log('login message', response.data.message);
+        console.log("login message", response.data.message);
       } else {
-        console.log('login message', response.data);
+        console.log("login message", response.data);
       }
     });
   };
@@ -34,14 +34,14 @@ const Signin = () => {
         <h1>Login</h1>
         <input
           type="text"
-          placeholder="Username..."
+          placeholder="아이디 입력"
           onChange={(e) => {
             setUsername(e.target.value);
           }}
         />
         <input
           type="password"
-          placeholder="Password..."
+          placeholder="비밀번호 입력"
           onChange={(e) => {
             setPassword(e.target.value);
           }}
@@ -49,7 +49,7 @@ const Signin = () => {
         <button onClick={login}> Login </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Signin;
