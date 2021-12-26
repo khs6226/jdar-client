@@ -2,13 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 
-let destination;
-if (process.env.IS_HEROKU) {
-  destination = process.env.destination;
-} else {
-  destination = process.env.destination;
-}
-
 const Playerscore = () => {
   const [playerInfo, setPlayerInfo] = useState([]);
   // const [names, setNames] = useState();
@@ -19,7 +12,9 @@ const Playerscore = () => {
   // };
 
   const getScores = async () => {
-    const result = await Axios.get(`${destination}/getplayerscore`);
+    const result = await Axios.get(
+      `${process.env.REACT_APP_DESTINATION}/getplayerscore`
+    );
     console.log("result", result);
     setPlayerInfo(result.data);
   };

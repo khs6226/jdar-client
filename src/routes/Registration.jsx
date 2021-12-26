@@ -2,13 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 
-let destination;
-if (process.env.IS_HEROKU) {
-  destination = process.env.destination;
-} else {
-  destination = process.env.destination;
-}
-
 const Registration = () => {
   const [usernameReg, setUsernameReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
@@ -29,7 +22,8 @@ const Registration = () => {
       alert("이름을 입력해주세요");
       document.getElementById("name").focus();
     } else {
-      Axios.post(`${destination}/register`, {
+      console.log("env", process.env);
+      Axios.post(`${process.env.DOMAIN}/register`, {
         username: usernameReg,
         password: passwordReg,
         name: name,
