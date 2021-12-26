@@ -9,8 +9,6 @@ const Registration = () => {
   const [name, setName] = useState("");
   const [gender, setGender] = useState(1);
 
-  Axios.defaults.withCredentials = true;
-
   const register = () => {
     if (!usernameReg) {
       alert("아이디를 입력해주세요.");
@@ -23,7 +21,7 @@ const Registration = () => {
       document.getElementById("name").focus();
     } else {
       console.log("env", process.env);
-      Axios.post(`${process.env.DOMAIN}/register`, {
+      Axios.post(`${process.env.REACT_APP_DESTINATION}/register`, {
         username: usernameReg,
         password: passwordReg,
         name: name,
