@@ -79,14 +79,14 @@ const Matchinput = () => {
     if (!participants) {
       alert("선수를 등록해주세요");
     } else {
-      if (window.confirm("모든 선수를 등록하셨나요?") == true) {
+      if (window.confirm("모든 선수를 등록하셨나요?") === true) {
         Axios.post(`${process.env.REACT_APP_DESTINATION}/registerplayer`, {
           date: date,
           ownerName: ownerName,
           location: location,
           participants: participants,
         });
-        window.location.reload(false);
+        window.location.href = "/playerscore";
       } else {
         return;
       }
